@@ -1,23 +1,16 @@
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/query";
 
 export default async function Home({ searchParams }: {
     searchParams: Promise<{ query?: string }>
 }) {
     const query = (await searchParams).query;
 
-    const posts = [
-        {
-            _createdAt: new Date(),
-            views: 55,
-            author: { _id: 1, name: "Daniel Siqueira de Oliveira" }, 
-            _id: 1,
-            description: "The startup wich will change the world",
-            image: "https://www.ideianoar.com.br/wp-content/uploads/2022/08/startup.jpg",
-            category: "Robots",
-            title: "We Robots",
-        },
-    ]
+    const posts = await client.fetch(STARTUPS_QUERY);
+
+    console.log(JSON.stringify(posts, null, 2));
 
     return (
         <>
